@@ -1,5 +1,7 @@
 import random
 
+mia_hierarchy = ["21", "66", "55", "44", "33", "22", "11", "65", "64", "63", "62", "61", "54", "53", "52", "51", "43", "42", "41", "32", "31"]
+
 def print_rules():
     """Display the rules of the Mia game"""
     print("\n" + "="*60)
@@ -40,11 +42,31 @@ def roll_dice():
     number1 = random.randint(1, 6)
     number2 = random.randint(1, 6)
     if number1 > number2:
-        return f"You rolled a {number1}{number2}"
+        print (f"You rolled a {number1}{number2}")
+        return f"{number1}{number2}"
     elif number2 > number1:
-        return f"You rolled a {number2}{number1}"
+        print (f"You rolled a {number2}{number1}")
+        return f"{number2}{number1}"
     else:
-        return f"You rolled a {number1}{number2}"
+        print (f"You rolled a {number1}{number2}")
+        return f"{number1}{number2}"
+
+def get_roll_placement(roll):
+    index = 0
+    for i in mia_hierarchy:
+        if roll == i:
+            return index
+        index += 1
+
+def winning_roll(roll1, roll2):
+    roll1_placement = get_roll_placement(roll1)
+    roll2_placement = get_roll_placement(roll2)
+    if roll1_placement > roll2_placement:
+        return roll1
+    else:
+        return roll2
+
+
 def play_game():
     while True:
         print(roll_dice())
