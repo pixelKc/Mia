@@ -115,31 +115,78 @@ def run_bluffing_phase(actual_roll, previous_roll):
         # If validation failed, continue the loop to get a new claim
 
 # 4. Player Transition Screen
-# TODO: STEP 2: Complete the print_player_transition_screen() function that:
 def print_player_transition_screen(current_player, player1_score, player2_score, roll_history):
     """Display the player transition screen"""
-    # TODO: STEP 2: Implement this function
-    # a. Displays current player scores and roll history
-    # b. Shows whose turn it is and the previous roll to beat
-    # c. Presents two options: "1. Roll the dice (Trust the claim)" or "2. Challenge the previous claim"
-    # d. Collects and validates the player's choice (1 or 2)
-    # e. Returns the player's choice for the main game loop to handle
-    # - Make it look like the "Screen 4: Player Transition Screen" example in Instructions.md
-    # remember to use the print_screen_header function to display the header which also clears the screen
-    pass
+    print_screen_header(f"Player {current_player}'s Turn")
+    print(f"""
+          Player 1: {player1_score}\n
+          Player 2: {player2_score}\n
+          Roll History: {roll_history}\n
+          Roll to beat {get_last_roll_from_history(roll_history)}\n\n
+          Select an option:\n
+          1. Roll the dice\n
+          2. Challenge the previous claim\n
+""")
+    userOption = input("Select an option 1 or 2\n")
+    actual_roll = None
+    if int(userOption) == 1:
+        print_roll_dice_screen(current_player, player1_score, player2_score, roll_history)
+        actual_roll, = print_make_claim_screen(current_player, roll_history)
+    elif int(userOption) == 2:
+        player1_score, player2_score = print_challenge_results_screen(current_player, player1_score, player2_score, actual_roll, roll_history)
+    else:
+        pass
+    return player1_score, player2_score
 
 # 5. Challenge Results Screen
-# TODO: STEP 3: Complete the print_challenge_results_screen() function that:
 def print_challenge_results_screen(challenger_player, player1_score, player2_score, actual_roll, roll_history):
     """Display the challenge results screen"""
-    # TODO: STEP 3: Implement this function
-    # a. Shows the challenge outcome (successful/unsuccessful)
-    # b. Displays the claimed roll vs actual roll comparison
-    # c. Calculates and shows point allocation based on challenge result
-    # d. Updates the scores using the update_scores utility function.
-    # e. Display the new scores
-    # f. Returns the updated scores for game state management
-    # - Make it look like the "Screen 5: Challenge Results Screen" examples in Instructions.md
-    # remember to use the print_screen_header function to display the header which also clears the screen
-    pass
+    print_screen_header("CHALLENGE RESULTS SCREEN")
+    print(f"{challenger_player} chooses to CHALLENGE!")
+    print(f"\n Roll History: {roll_history}")
+    if challenger_player == "Player 1":
+        print(f"Player 2's claimed roll{get_last_roll_from_history(roll_history)}")
+        print(f"Player 2's actual roll{actual_roll}")
+        if actual_roll == get_last_roll_from_history(roll_history):
+            player1_score, player2_score = update_scores(1, player1_score, player2_score, 1)
+            print("\n Challenge Result: FAIL")
+            print("Player 2 was, in fact, not bluffing")
+        else:
+                player1_score, player2_score = update_scores(2, player1_score, player2_score, 1)
+                print("\n Challenge Result: SUCCESS")
+                print("Player 2 was, in fact, bluffing")
+                print("\n Player 2 gets +1")
+                print("Player 1 gets +0")
+    else:
+        print(f"Player 1's claimed roll{get_last_roll_from_history(roll_history)}")
+        print(f"Player 1's actual roll{actual_roll}")
+        if actual_roll == get_last_roll_from_history(roll_history):
+            player1_score, player2_score = update_scores(2, player1_score, player2_score, 1)
+            print("\n Challenge Result: FAIL")
+            print("Player 1 was, in fact, not bluffing")
+        else:
+            player1_score, player2_score = update_scores(1, player1_score, player2_score, 1)
+            print("\n Challenge Result: SUCCESS")
+            print("Player 1 was, in fact, bluffing")
+            print("\n Player 1 gets +1")
+            print("Player 2 gets +0")
+    print("\n New Scores: ")
+    print(f"Player 1: {player1_score}/10")
+    print(f"Player 2: {player2_score}/10")
 
+    input("\n Press Enter to continue to the next round...")
+    return player1_score, player2_score
+
+def print_game_over(player1_score, player2_score):
+    print_screen_header("Game Over")
+
+    print("\n Scores:")
+    print(f"Player 1 Score: {player1_score}")
+    print(f"Player 2 Score: {player2_score}")
+
+    if player1_score == 10:
+        print("Player 2 Wins")
+    else:
+        print("Player 1 Wins")
+
+    print("\n Thank you for playing Mia")

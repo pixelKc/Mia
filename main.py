@@ -23,17 +23,16 @@ def play_game():
         else:
             roll_history = f"{roll_history}, {claimed_roll}"
         
-        # TODO: STEP 4a: Since we have a valid claim, switch players
-        # TODO: STEP 4b: call the player transition screen and get choice to roll or challenge
-        # TODO: STEP 4c: When a player chooses to challenge (choice == "2"):
-        #    - Call the challenge results screen and get updated scores
-        #    - Check if game is over (someone reached 10 points)
-        #    - If game is over: display winner announcement and return to main menu
-        #    - If game continues: reset roll_history for new round and continue
-        # TODO: STEP 4d: We don't need to anything when
-        # the player chooses to roll (choice == "1") because the game will simply loop
-        # and the next player will get to roll for their turn.
-        pass
+        if current_player == 1:
+            current_player = 2
+        else:
+            current_player = 1
+        
+        player1_score, player2_score = print_player_transition_screen(current_player, player1_score, player2_score, roll_history)
+        if isGameOver(player1_score, player2_score):
+            print_game_over()
+        else:
+            roll_history = ""
             
 
 def main():

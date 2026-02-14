@@ -17,15 +17,17 @@ def update_scores(player, player1_score, player2_score, points_to_gain):
         player2_score += points_to_gain
     return player1_score, player2_score
 
-# TODO: STEP 1: Implement the get_last_roll_from_history() helper function
 def get_last_roll_from_history(roll_history):
     """Extract the last roll from the roll history string"""
-    # TODO: STEP 1: Implement this function using string slicing
-    # a. Takes a roll_history string as input (e.g., "63, 55, 66")
-    # b. Returns None if the roll_history is empty (first roll of the game)
-    # c. Uses string slicing to extract the last roll from the history:
-    #    - Use string slicing with negative index: roll_history[-2:] to get the last 2 characters
-    #    - This works because each roll is exactly 2 digits, so the last 2 characters are always the most recent roll
-    # d. Handle the empty string case with an if statement
-    # e. Returns the most recent roll as a string (e.g., "66")
+    
+    if roll_history == "":
+        return None
+    else:
+        return roll_history[-2:]
     pass
+
+def isGameOver(player1_score, player2_score):
+    if player1_score == 10 or player2_score == 10:
+        return True
+    else:
+        return False
